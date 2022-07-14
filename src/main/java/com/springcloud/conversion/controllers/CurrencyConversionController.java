@@ -1,12 +1,15 @@
 package com.springcloud.conversion.controllers;
 
 import com.springcloud.conversion.entities.CurrencyConversion;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 
 /**
  * @PROJECT conversion-service
@@ -18,6 +21,17 @@ public class CurrencyConversionController {
 
   @GetMapping("/from/{from}/to/{to}/quantity/{quantity}")
   public CurrencyConversion calculate(@PathVariable String from,@PathVariable String to,@PathVariable BigDecimal quantity){
-    return new CurrencyConversion(1001L, from, to, quantity,BigDecimal.ONE,BigDecimal.ONE, "8000 instance-id");
+
+    //use Hashmap to make key/value data
+    // including conversion parameters
+    HashMap<String, String> uriVariables = new HashMap<>();
+    uriVariables.put("from", from);
+    uriVariables.put("to", to);
+
+    //Connecting to invoke currency-exchange service
+    ResponseEntity<CurrencyConversion> responseEntity =  new RestTemplate().getForEntity("http://localhost:8002/currency-exchange/from/"+ from+"/to/"+to, CurrencyConversion.class, uriVariables);
+    CurrencyConversion currencyConversion = responseEntity.getBody();
+
+    return new CurrencyConversion(currencyConversion.getId(), currencyConversion.getFrom(), currencyConversion.getTo(), quantity,currencyConversion.getConversionMultiple(),quantity.multiply(currencyConversion.getConversionMultiple()), currencyConversion.getEnvironment());
   }
 }
