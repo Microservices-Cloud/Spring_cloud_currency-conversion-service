@@ -1,6 +1,8 @@
 package com.springcloud.conversion.controllers;
 
 import com.springcloud.conversion.entities.CurrencyConversion;
+import com.springcloud.conversion.utils.CurrencyExchangeProxy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,10 +18,13 @@ import java.util.HashMap;
  * @Author Elimane on 14/07/2022
  */
 @RestController
-@RequestMapping(value = "/currency-conversion")
+//@RequestMapping(value = "/currency-conversion")
 public class CurrencyConversionController {
 
-  @GetMapping("/from/{from}/to/{to}/quantity/{quantity}")
+  @Autowired
+  private CurrencyExchangeProxy proxy;
+
+  @GetMapping("/currency-conversion/from/{from}/to/{to}/quantity/{quantity}")
   public CurrencyConversion calculate(@PathVariable String from,@PathVariable String to,@PathVariable BigDecimal quantity){
 
     //use Hashmap to make key/value data
@@ -34,4 +39,14 @@ public class CurrencyConversionController {
 
     return new CurrencyConversion(currencyConversion.getId(), currencyConversion.getFrom(), currencyConversion.getTo(), quantity,currencyConversion.getConversionMultiple(),quantity.multiply(currencyConversion.getConversionMultiple()), currencyConversion.getEnvironment());
   }
+
+  //Using FEIGN
+  @GetMapping("/currency-conversion-feign/from/{from}/to/{to}/quantity/{quantity}")
+  public CurrencyConversion calculateWithFeign(@PathVariable String from,@PathVariable String to,@PathVariable BigDecimal quantity){
+
+    CurrencyConversion currencyConversion = proxy.retrieveExchangeValue(from,to);
+
+    return new CurrencyConversion(currencyConversion.getId(), currencyConversion.getFrom(), currencyConversion.getTo(), quantity,currencyConversion.getConversionMultiple(),quantity.multiply(currencyConversion.getConversionMultiple()), currencyConversion.getEnvironment());
+  }
+
 }
