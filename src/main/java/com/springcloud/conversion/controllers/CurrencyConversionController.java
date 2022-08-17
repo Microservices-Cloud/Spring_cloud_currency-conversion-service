@@ -2,6 +2,8 @@ package com.springcloud.conversion.controllers;
 
 import com.springcloud.conversion.entities.CurrencyConversion;
 import com.springcloud.conversion.utils.CurrencyExchangeProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +26,12 @@ public class CurrencyConversionController {
   @Autowired
   private CurrencyExchangeProxy proxy;
 
+  private Logger logger = LoggerFactory.getLogger(CurrencyConversionController.class);
+
   @GetMapping("/currency-conversion/from/{from}/to/{to}/quantity/{quantity}")
   public CurrencyConversion calculate(@PathVariable String from,@PathVariable String to,@PathVariable BigDecimal quantity){
+
+    logger.info("retrieveExchangeValue called with {} to {} with quantity of {}", from, to, quantity);
 
     //use Hashmap to make key/value data
     // including conversion parameters
