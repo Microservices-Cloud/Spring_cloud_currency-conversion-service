@@ -9,7 +9,7 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.springcloud</groupId>
-  <artifactId>conversion</artifactId>
+  <artifactId>currency-conversion</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>conversion-service</name>
   <description>conversion-service</description>
