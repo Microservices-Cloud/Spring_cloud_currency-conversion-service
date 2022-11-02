@@ -31,7 +31,8 @@ public class CurrencyConversionController {
   @GetMapping("/currency-conversion/from/{from}/to/{to}/quantity/{quantity}")
   public CurrencyConversion calculate(@PathVariable String from,@PathVariable String to,@PathVariable BigDecimal quantity){
 
-    logger.info("retrieveExchangeValue called with {} to {} with quantity of {}", from, to, quantity);
+    // CHANGE KUBERNETES
+    logger.info("CalculateCurrencyConversion called with {} to {} with quantity of {}", from, to, quantity);
 
     //use Hashmap to make key/value data
     // including conversion parameters
@@ -49,6 +50,9 @@ public class CurrencyConversionController {
   //Using FEIGN
   @GetMapping("/currency-conversion-feign/from/{from}/to/{to}/quantity/{quantity}")
   public CurrencyConversion calculateWithFeign(@PathVariable String from,@PathVariable String to,@PathVariable BigDecimal quantity){
+
+    // CHANGE KUBERNETES
+    logger.info("CalculateCurrencyConversionFeign called with {} to {} with quantity of {}", from, to, quantity);
 
     CurrencyConversion currencyConversion = proxy.retrieveExchangeValue(from,to);
 

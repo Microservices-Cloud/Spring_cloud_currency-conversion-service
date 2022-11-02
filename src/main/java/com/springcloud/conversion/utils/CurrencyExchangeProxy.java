@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @Author Elimane on 14/07/2022
  */
 //@FeignClient(name = "currency-exchange", url = "localhost:8002")
-@FeignClient(name = "currency-exchange")
+//@FeignClient(name = "currency-exchange")
+//CHANGE-KUBERNETES
+@FeignClient(name = "currency-exchange", url = "${CURRENCY_EXCHANGE_SERVICE_HOST:http://localhost}:8000")
 public interface CurrencyExchangeProxy {
   @GetMapping("/currency-exchange/from/{from}/to/{to}")
   public CurrencyConversion retrieveExchangeValue(@PathVariable String from, @PathVariable String to);
