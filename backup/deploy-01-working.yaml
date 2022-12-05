@@ -30,9 +30,9 @@ spec:
         - image: elfn/springcloud-currency-conversion:0.0.12-SNAPSHOT
           imagePullPolicy: IfNotPresent
           name: springcloud-currency-conversion
-          envFrom:
-            - configMapRef:
-                name: currency-conversion
+          env:
+            - name: CURRENCY_EXCHANGE_URI
+              value: http://currency-exchange
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
@@ -79,19 +79,3 @@ spec:
     app: currency-conversion
   sessionAffinity: None
   type: LoadBalancer
----
-apiVersion: v1
-data:
-  CURRENCY_EXCHANGE_URI: http://currency-exchange
-kind: ConfigMap
-metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","data":{"CURRENCY_EXCHANGE_URI":"http://currency-exchange"},"kind":"ConfigMap","metadata":{"annotations":{},"creationTimestamp":"2022-12-05T07:42:30Z","name":"currency-conversion","namespace":"default","resourceVersion":"645259","uid":"50a180f8-e9ca-4357-abb2-a622dbaebca2"}}
-  creationTimestamp: "2022-12-05T07:42:30Z"
-  name: currency-conversion
-  namespace: default
-  resourceVersion: "651427"
-  uid: 50a180f8-e9ca-4357-abb2-a622dbaebca2
-
-

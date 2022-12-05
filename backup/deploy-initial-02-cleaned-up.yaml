@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+#    deployment.kubernetes.io/revision: "1"
+#    kubectl.kubernetes.io/last-applied-configuration: |
+#      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"deployment.kubernetes.io/revision":"1"},"creationTimestamp":"2022-12-04T09:22:28Z","generation":1,"labels":{"app":"currency-conversion"},"name":"currency-conversion","namespace":"default","resourceVersion":"34668","uid":"483a7c25-27c6-42b6-b6b4-beb72aed3527"},"spec":{"progressDeadlineSeconds":600,"replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"currency-conversion"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"currency-conversion"}},"spec":{"containers":[{"image":"elfn/springcloud-currency-conversion:0.0.11-SNAPSHOT","imagePullPolicy":"IfNotPresent","name":"springcloud-currency-conversion","resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}}},"status":{"availableReplicas":1,"conditions":[{"lastTransitionTime":"2022-12-04T09:22:32Z","lastUpdateTime":"2022-12-04T09:22:32Z","message":"Deployment has minimum availability.","reason":"MinimumReplicasAvailable","status":"True","type":"Available"},{"lastTransitionTime":"2022-12-04T09:22:28Z","lastUpdateTime":"2022-12-04T09:22:32Z","message":"ReplicaSet \"currency-conversion-594c746855\" has successfully progressed.","reason":"NewReplicaSetAvailable","status":"True","type":"Progressing"}],"observedGeneration":1,"readyReplicas":1,"replicas":1,"updatedReplicas":1}}
+#  creationTimestamp: "2022-12-04T09:22:28Z"
+#  generation: 2
+  labels:
+    app: currency-conversion
+  name: currency-conversion
+  namespace: default
+  resourceVersion: "75446"
+  uid: 483a7c25-27c6-42b6-b6b4-beb72aed3527
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: currency-conversion
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: currency-conversion
+    spec:
+      containers:
+      - image: elfn/springcloud-currency-conversion:0.0.11-SNAPSHOT
+        imagePullPolicy: IfNotPresent
+        name: springcloud-currency-conversion
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2022-12-04T09:22:32Z"
+    lastUpdateTime: "2022-12-04T09:22:32Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2022-12-04T09:22:28Z"
+    lastUpdateTime: "2022-12-04T09:22:32Z"
+    message: ReplicaSet "currency-conversion-594c746855" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 2
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+#    cloud.google.com/neg: '{"ingress":true}'
+#    kubectl.kubernetes.io/last-applied-configuration: |
+#      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{"cloud.google.com/neg":"{\"ingress\":true}"},"creationTimestamp":"2022-12-04T09:22:45Z","finalizers":["service.kubernetes.io/load-balancer-cleanup"],"labels":{"app":"currency-conversion"},"name":"currency-conversion","namespace":"default","resourceVersion":"34970","uid":"da6e4920-64fe-4a0b-a7d3-ba6cd709d086"},"spec":{"allocateLoadBalancerNodePorts":true,"clusterIP":"10.8.8.213","clusterIPs":["10.8.8.213"],"externalTrafficPolicy":"Cluster","internalTrafficPolicy":"Cluster","ipFamilies":["IPv4"],"ipFamilyPolicy":"SingleStack","ports":[{"nodePort":32227,"port":8011,"protocol":"TCP","targetPort":8011}],"selector":{"app":"currency-conversion"},"sessionAffinity":"None","type":"LoadBalancer"},"status":{"loadBalancer":{"ingress":[{"ip":"34.170.69.55"}]}}}
+#  creationTimestamp: "2022-12-04T09:22:45Z"
+#  finalizers:
+#    - service.kubernetes.io/load-balancer-cleanup
+  labels:
+    app: currency-conversion
+  name: currency-conversion
+  namespace: default
+  resourceVersion: "75448"
+  uid: da6e4920-64fe-4a0b-a7d3-ba6cd709d086
+spec:
+#  allocateLoadBalancerNodePorts: true
+#  clusterIP: 10.8.8.213
+#  clusterIPs:
+#    - 10.8.8.213
+#  externalTrafficPolicy: Cluster
+#  internalTrafficPolicy: Cluster
+#  ipFamilies:
+#    - IPv4
+#  ipFamilyPolicy: SingleStack
+  ports:
+    - port: 8011
+      protocol: TCP
+      targetPort: 8011
+  selector:
+    app: currency-conversion
+  sessionAffinity: None
+  type: LoadBalancer
+#status:
+#  loadBalancer:
+#    ingress:
+#      - ip: 34.170.69.55
